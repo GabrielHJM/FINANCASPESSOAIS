@@ -1,0 +1,123 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #05070a;
+  --foreground: #f8fafc;
+  --accent: #007aff; /* Apple Blue */
+  --primary: #34c759; /* Apple Green */
+  --secondary: #ff3b30; /* Apple Red */
+  --card-bg: rgba(255, 255, 255, 0.03);
+  --border-color: rgba(255, 255, 255, 0.08);
+  --glass-blur: 40px;
+  --radius-xl: 48px;
+  --radius-lg: 32px;
+  --radius-md: 20px;
+  --radius-sm: 12px;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  letter-spacing: -0.022em;
+  overflow-x: hidden;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 
+  APPLE GLASSMorphism (Estilo Vidro v2)
+  Using High-Fidelity Blur and Border Gradients
+*/
+.glass-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-xl); /* Elite Apple Squircle */
+  box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.5);
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+
+.glass-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom right, rgba(255, 255, 255, 0.1), transparent);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+}
+
+.glass-card:hover {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.04) 100%);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px) scale(1.01);
+  box-shadow: 0 50px 100px -25px rgba(0, 0, 0, 0.6);
+}
+
+.glass-card:hover::before {
+  opacity: 1;
+}
+
+/* Apple Buttons */
+.btn-apple {
+  background: var(--accent);
+  color: white;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  border-radius: 12px;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
+}
+
+.btn-apple:hover {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+}
+
+.btn-apple:active {
+  transform: scale(0.96);
+}
+
+/* Background Vibrancy */
+.bg-blob {
+  position: fixed;
+  width: 60vw;
+  height: 60vw;
+  filter: blur(120px);
+  opacity: 0.15;
+  z-index: -1;
+  border-radius: 50%;
+  animation: blob-float 30s infinite alternate ease-in-out;
+}
+
+@keyframes blob-float {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(10%, 15%) scale(1.1); }
+  100% { transform: translate(-5%, -10%) scale(0.9); }
+}
+
+.blob-blue { background: #007aff; top: -10%; right: -5%; }
+.blob-purple { background: #5856d6; bottom: -10%; left: -5%; animation-delay: -5s; }
+.blob-pink { background: #ff2d55; top: 30%; left: 10%; opacity: 0.05; animation-delay: -10s; }
+
+/* Scrollbar Cleanliness */
+::selection { background: var(--accent); color: white; }
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.2); }
+
+/* Typography Standard */
+h1, h2, h3, h4 { letter-spacing: -0.04em; }
+.tracking-apple { letter-spacing: -0.022em; }
+

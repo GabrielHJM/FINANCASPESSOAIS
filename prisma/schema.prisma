@@ -1,0 +1,86 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  accounts  Account[]
+  cards     Card[]
+}
+
+model Bank {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  logo      String?  // URL to logo
+  primaryColor String? // Hex code
+  accounts  Account[]
+}
+
+model Account {
+  id        String   @id @default(uuid())
+  name      String
+  balance   Float    @default(0)
+  type      AccountType @default(CASH)
+  bankId    String?
+  bank      Bank?    @relation(fields: [bankId], references: [id])
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id])
+  transactions Transaction[]
+  transfersFrom Transfer[] @relation("FromAccount")
+  transfersTo   Transfer[] @relation("ToAccount")
+  createdAt DateTime @default(now())
+}
+
+enum AccountType {
+  CHECKING
+  SAVINGS
+  CASH
+  INVESTMENT
+}
+
+model Card {
+  id        String   @id @default(uuid())
+  name      String
+  limit     Float
+  used      Float    @default(0)
+  userId    String?
+  user      User?     @relation(fields: [userId], references: [id])
+  transactions Transaction[]
+  createdAt DateTime @default(now())
+}
+
+model Transaction {
+  id          String   @id @default(uuid())
+  description String
+  amount      Float
+  type        TransactionType
+  category    String
+  date        DateTime @default(now())
+  accountId   String?
+  account     Account?  @relation(fields: [accountId], references: [id])
+  cardId      String?
+  card        Card?     @relation(fields: [cardId], references: [id])
+  createdAt   DateTime @default(now())
+}
+
+enum TransactionType {
+  INCOME
+  EXPENSE
+}
+
+model Transfer {
+  id            String   @id @default(uuid())
+  amount        Float
+  fromAccountId String
+  fromAccount   Account  @relation("FromAccount", fields: [fromAccountId], references: [id])
+  toAccountId   String
+  toAccount     Account  @relation("ToAccount", fields: [toAccountId], references: [id])
+  date          DateTime @default(now())
+}
